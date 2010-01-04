@@ -1,80 +1,98 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Name that quote</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script type="text/javascript">
+        var db = [
+            {
+                start: "Mon Jan 04 17:31:03 +0000 2010",
+                quote: { id: "7373225361", text: "I wanted to be with you alone and talk about the weather." },
+                winner: { id: "7373291711", name: "jodiwilldare" },
+                end: "Mon Jan 04 17:33:30 +0000 2010"
+            }
+        ];
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        jQuery(document).ready(function($) {
+            var str = [],
+                winners = {};
+            $.each(db, function(i, o) {
+                var s = new Date(o.start),
+                    e = new Date(o.end),
+                    diff = (e.getTime() - s.getTime()) / 1000
+                ;
+                str.push(
+                    '<tr scope="row">',
+                    '   <td headers="s" class="center">', s.toLocaleDateString(), ' ', s.toLocaleTimeString(), '</td>',
+                    '   <td headers="q"><a href="http://twitter.com/karbassi/status/', o.quote.id, '">', o.quote.text, '</a></td>',
+                    '   <td headers="w"><a href="http://twitter.com/', o.winner.name, '/status/', o.winner.id, '">@', o.winner.name, '</a></td>',
+                    '   <td headers="e" class="center">', e.toLocaleDateString(), ' ', e.toLocaleTimeString(), '</td>',
+                    '   <td headers="d" class="right">', diff, 's</td>',
+                    '</tr>'
+                );
+                winners[o.winner.name] = winners[o.winner.name] + 1 || 1;
+            });
 
-	<title>karbassi/Name-That-Quote @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #2ba708;
-		  font-family: "Helvetica,Arial,FreeSans"; 
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #d458f7; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #d458f7; }
-    h3 { text-align: center; color: #d458f7; }
-    a { color: #d458f7; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
-</head>
+            $('#list > tbody').append(str.join(''));
 
-<body>
-  <a href="http://github.com/karbassi/Name-That-Quote"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  
-  <div id="container">
+            console.dir(winners);
 
-    <div class="download">
-      <a href="http://github.com/karbassi/Name-That-Quote/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/karbassi/Name-That-Quote/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-      
-    <h1><a href="http://github.com/karbassi/Name-That-Quote">Name That Quote</a> 
-      <span class="small">by <a href="http://github.com/karbassi">karbassi</a></span></h1>
+            str = [];
 
-    <div class="description">
-      
-    </div>
+            $.each(winners, function(i, o){
+                console.debug(i, o);
+                str.push(
+                    '<tr scope="row">',
+                    '   <td><a href="http://twitter.com/', i, '/">', i, '</a></td>',
+                    '   <td>', o, '</td>',
+                    '</tr>'
+                );
+            });
 
-    <h2>Authors</h2>
-<p>Ali Karbassi (ali@karbassi.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Ali Karbassi (ali.karbassi@gmail.com)<br/>      </p>
+            $('#points > tbody').append(str.join(''));
 
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/karbassi/Name-That-Quote/zipball/master">zip</a> or
-      <a href="http://github.com/karbassi/Name-That-Quote/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/karbassi/Name-That-Quote</pre>
-    </p>
-      
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/karbassi/Name-That-Quote">karbassi/Name-That-Quote</a>
-    </div>
-    
-  </div>
+        });
+        </script>
+        <style type="text/css" media="screen">
+            body {width:960px;margin: 3em auto;font: 1em/1.3em Helvetica, sans-serif;background-color: #F9FCFF;}
+            tr, th, td {padding: 10px;}
+            a {text-decoration: none;color: #000;}
+            a:hover {color: #FFAC00;}
+            .center {text-align: center;}
+            .right {text-align: right;}
+            table th { color: #000; background-color: #FFDDBC; }
 
-  
-</body>
+            #s, #e, #d {width:90px;}
+
+        </style>
+    </head>
+    <body>
+        <h1>Name That Quote</h1>
+        <table id="list">
+            <thead>
+                <tr>
+                    <th id="s" scope="col">Date-Time</th>
+                    <th id="q" scope="col">Quote</th>
+                    <th id="w" scope="col">Winner</th>
+                    <th id="e" scope="col">First</th>
+                    <th id="d" scope="col">Speed</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="points">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </body>
 </html>
